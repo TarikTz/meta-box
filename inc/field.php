@@ -34,13 +34,18 @@ abstract class RWMB_Field
 		$defaults            = get_object_vars( $this );
 		$args                = wp_parse_args( $args, $defaults );
 
+		// Allow to add default values for fields
+		$args = apply_filters( 'rwmb_normalize_field', $args );
+		$args = apply_filters( "rwmb_normalize_{$this->type}_field", $args );
+		$args = apply_filters( "rwmb_normalize_{$this->id}_field", $args );
+
 		//Set args
 		foreach( $defaults as $key => $value ) {
-			$this->$key = $args[$key];
+			$this->$key = is_array( $value ) ? wp_parse_args( $args[$key], $value ); : $args[$key];
 		}
 
 	}
-	
+
 	/**
 	 * Add actions
 	 */
@@ -439,17 +444,16 @@ abstract class RWMB_Field
 	/**
 	 * Get field class name
 	 *
-	 * @param array $field Field array
+	 * @param text $type Field array
 	 * @return string Field class name
 	 */
-	public static function get_class_name( $field )
+	public static function get_class_name( $type )
 	{
-		$type = $this->type;
-		if ( 'file_advanced' == $this->type )
+		if ( 'file_advanced' == $type )
 		{
 			$type = 'media';
 		}
-		if ( 'plupload_image' == $this->type )
+		if ( 'plupload_image' == $type )
 		{
 			$type = 'image_upload';
 		}
