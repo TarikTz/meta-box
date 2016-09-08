@@ -5,58 +5,51 @@
  */
 abstract class RWMB_Input_Field extends RWMB_Field
 {
+	public $datalist = false;
+	public $readonly = false;
+
+	function __construct( $args = array() )
+	{
+		if( $args ['datalist'] )
+		{
+			$args['datalist'] = wp_parse_args( $args['datalist'], array(
+				'id'      => $this->id . '_list',
+				'options' => array(),
+			) );
+		}
+
+		parent::__construct( $args );
+	}
+
 	/**
 	 * Get field HTML
 	 *
 	 * @param mixed $meta
-	 * @param array $field
+	 *
 	 * @return string
 	 */
-	public static function html( $meta, $field )
+	public function html( $meta )
 	{
-		$attributes = self::call( 'get_attributes', $field, $meta );
-		return sprintf( '<input %s>%s', self::render_attributes( $attributes ), self::datalist( $field ) );
+		$attributes = $this->get_attributes( $meta );
+		return sprintf( '<input %s>%s', self::render_attributes( $attributes ), $this->datalist( $field ) );
 	}
 
-	/**
-	 * Normalize parameters for field
-	 *
-	 * @param array $field
-	 * @return array
-	 */
-	public static function normalize( $field )
-	{
-		$field = parent::normalize( $field );
-		$field = wp_parse_args( $field, array(
-			'datalist' => false,
-			'readonly' => false,
-		) );
-		if ( $field['datalist'] )
-		{
-			$field['datalist'] = wp_parse_args( $field['datalist'], array(
-				'id'      => $field['id'] . '_list',
-				'options' => array(),
-			) );
-		}
-		return $field;
-	}
 
 	/**
 	 * Get the attributes for a field
 	 *
-	 * @param array $field
 	 * @param mixed $value
 	 * @return array
 	 */
-	public static function get_attributes( $field, $value = null )
+	public function get_attributes( $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
-			'list'        => $field['datalist'] ? $field['datalist']['id'] : false,
-			'readonly'    => $field['readonly'],
+			'list'        => $this->datalist ? $this->datalist['id'] : false,
+			'readonly'    => $this->readonly,
 			'value'       => $value,
-			'placeholder' => $field['placeholder'],
-			'type'        => $field['type'],
+			'placeholder' => $this->placeholder,
+			'type'        => $this->type,
 		) );
 
 		return $attributes;
@@ -68,12 +61,12 @@ abstract class RWMB_Input_Field extends RWMB_Field
 	 * @param array $field
 	 * @return array
 	 */
-	protected static function datalist( $field )
+	protected function datalist()
 	{
-		if ( empty( $field['datalist'] ) )
+		if ( empty( $this->datalist ) )
 			return '';
 
-		$datalist = $field['datalist'];
+		$datalist = $this->datalist;
 		$html     = sprintf( '<datalist id="%s">', $datalist['id'] );
 		foreach ( $datalist['options'] as $option )
 		{
