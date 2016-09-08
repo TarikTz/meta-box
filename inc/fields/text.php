@@ -11,12 +11,11 @@ class RWMB_Text_Field extends RWMB_Input_Field
 	/**
 	 * Get the attributes for a field
 	 *
-	 * @param array $field
 	 * @param mixed $value
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	function get_attributes( $value = null )
 	{
 		$attributes = parent::get_attributes( $field, $value );
 		$attributes = wp_parse_args( $attributes, array(
