@@ -25,7 +25,7 @@ class RWMB_Core
 		add_filter( "plugin_action_links_$plugin", array( $this, 'plugin_links' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'init', array( $this, 'register_meta_boxes' ) );
-        add_action( 'init', array( $this, 'register_wpml_hooks' ) );
+		add_action( 'init', array( $this, 'register_wpml_hooks' ) );
 		add_action( 'edit_page_form', array( $this, 'fix_page_template' ) );
 	}
 

@@ -4,6 +4,7 @@
  */
 class RWMB_Text_Field extends RWMB_Input_Field
 {
+	public $type      = 'text';
 	public $size      = 30;
 	public $maxlength = false;
 	public $pattern   = false;

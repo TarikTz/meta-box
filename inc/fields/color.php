@@ -5,7 +5,7 @@
  */
 class RWMB_Color_Field extends RWMB_Text_Field
 {
-
+	public $type       = 'text';
 	public $size       = 7;
 	public $maxlength  = 7;
 	public $pattern    = '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$';
