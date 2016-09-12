@@ -41,7 +41,7 @@ abstract class RWMB_Field
 
 		//Set args
 		foreach( $defaults as $key => $value ) {
-			$this->$key = is_array( $value ) ? wp_parse_args( $args[$key], $value ); : $args[$key];
+			$this->$key = $args[$key];
 		}
 
 	}

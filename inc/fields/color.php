@@ -9,11 +9,17 @@ class RWMB_Color_Field extends RWMB_Text_Field
 	public $size       = 7;
 	public $maxlength  = 7;
 	public $pattern    = '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$';
-	public $js_options = array(
-		'defaultColor' => false,
-		'hide'         => true,
-		'palettes'     => true,
-	);
+	public $js_options = array();
+
+	function __construct( $args = array() )
+	{
+		$args['js_options'] = wp_parse_args( $args['js_options'], array(
+			'defaultColor' => false,
+			'hide'         => true,
+			'palettes'     => true,
+		) );
+		parent::__construct( $args );
+	}
 
 	/**
 	 * Enqueue scripts and styles
