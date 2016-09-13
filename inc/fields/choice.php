@@ -78,9 +78,10 @@ abstract class RWMB_Choice_Field extends RWMB_Field
 		$options = array();
 		foreach ( (array) $field['options'] as $value => $label )
 		{
-			$option = is_array( $label ) ? $label : array( 'label' => (string) $label, 'value' => (string) $value );
-			if ( isset( $option['label'] ) && isset( $option['value'] ) )
-				$options[$option['value']] = (object) $option;
+			$option = is_array( $label ) || is_object( $label ) ? $label : array( 'label' => (string) $label, 'value' => (string) $value );
+			$option = (object) $option;
+			if ( isset( $option->label ) && isset( $option->value ) )
+				$options[ $option->value ] = $option;
 		}
 		return $options;
 	}

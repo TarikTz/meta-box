@@ -18,7 +18,7 @@ class RWMB_Text_Field extends RWMB_Input_Field
 	 */
 	function get_attributes( $value = null )
 	{
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes = parent::get_attributes( $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'size'        => $this->size,
 			'maxlength'   => $this->maxlength,

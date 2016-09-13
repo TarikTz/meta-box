@@ -4,25 +4,10 @@
  */
 class RWMB_Number_Field extends RWMB_Input_Field
 {
-	/**
-	 * Normalize parameters for field
-	 *
-	 * @param array $field
-	 *
-	 * @return array
-	 */
-	static function normalize( $field )
-	{
-		$field = parent::normalize( $field );
-
-		$field = wp_parse_args( $field, array(
-			'step' => 1,
-			'min'  => 0,
-			'max'  => false,
-		) );
-
-		return $field;
-	}
+	public $type = 'number';
+	public $step = 1;
+	public $min  = 0;
+	public $max  = false;
 
 	/**
 	 * Get the attributes for a field
@@ -32,9 +17,9 @@ class RWMB_Number_Field extends RWMB_Input_Field
 	 *
 	 * @return array
 	 */
-	static function get_attributes( $field, $value = null )
+	function get_attributes( $value = null )
 	{
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes = parent::get_attributes( $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'step' => $field['step'],
 			'max'  => $field['max'],

@@ -38,7 +38,7 @@ class RWMB_Color_Field extends RWMB_Text_Field
 	 */
 	function get_attributes( $value = null )
 	{
-		$attributes = parent::get_attributes( $field, $value );
+		$attributes = parent::get_attributes( $value );
 		$attributes = wp_parse_args( $attributes, array(
 			'data-options' => wp_json_encode( $this->js_options ),
 		) );

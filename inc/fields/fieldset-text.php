@@ -5,27 +5,32 @@
  */
 class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 {
+	function __construct( $args = array() )
+	{
+		$args['multiple'] = false;
+		parent::__construct( $args );
+	}
+
 	/**
 	 * Get field HTML
 	 *
 	 * @param mixed $meta
-	 * @param array $field
 	 *
 	 * @return string
 	 */
-	static function html( $meta, $field )
+	function html( $meta )
 	{
 		$html = array();
 		$tpl  = '<label>%s %s</label>';
 
-		foreach ( $field['options'] as $key => $label )
+		foreach ( $this->options as $key => $label )
 		{
 			$value                       = isset( $meta[$key] ) ? $meta[$key] : '';
-			$field['attributes']['name'] = $field['field_name'] . "[{$key}]";
-			$html[]                      = sprintf( $tpl, $label, parent::html( $value, $field ) );
+			$this->attributes['name'] = $this->field_name . "[{$key}]";
+			$html[]                      = sprintf( $tpl, $label, parent::html( $value ) );
 		}
 
-		$out = '<fieldset><legend>' . $field['desc'] . '</legend>' . implode( ' ', $html ) . '</fieldset>';
+		$out = '<fieldset><legend>' . $this->desc . '</legend>' . implode( ' ', $html ) . '</fieldset>';
 
 		return $out;
 	}
@@ -41,37 +46,34 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 	}
 
 	/**
-	 * Normalize parameters for field
+	 * Get the attributes for a field
 	 *
-	 * @param array $field
-	 *
+	 * @param mixed $value
 	 * @return array
 	 */
-	static function normalize( $field )
+	public function get_attributes( $value = null )
 	{
-		$field                       = parent::normalize( $field );
-		$field['multiple']           = false;
-		$field['attributes']['id']   = false;
-		$field['attributes']['type'] = 'text';
-		return $field;
+		$attributes         = parent::get_attributes( $value );
+		$attributes['id']   = false;
+		$attributes['type'] = 'text';
+		return $attributes;
 	}
 
 	/**
 	 * Format value for the helper functions.
-	 * @param array        $field Field parameter
 	 * @param string|array $value The field meta value
 	 * @return string
 	 */
-	public static function format_value( $field, $value )
+	public function format_value( $value )
 	{
 		$output = '<table><thead><tr>';
-		foreach ( $field['options'] as $label )
+		foreach ( $this->options as $label )
 		{
 			$output .= "<th>$label</th>";
 		}
 		$output .= '<tr>';
 
-		if ( ! $field['clone'] )
+		if ( ! $this->clone )
 		{
 			$output .= self::format_single_value( $field, $value );
 		}
@@ -92,7 +94,7 @@ class RWMB_Fieldset_Text_Field extends RWMB_Text_Field
 	 * @param array $value The value
 	 * @return string
 	 */
-	public static function format_single_value( $field, $value )
+	public function format_single_value( $value )
 	{
 		$output = '<tr>';
 		foreach ( $value as $subvalue )
