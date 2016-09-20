@@ -284,8 +284,7 @@ class RW_Meta_Box
 
 		foreach ( $fields as $field )
 		{
-			$class = RWMB_Field::get_class_name( $field->type );
-			$field_objs[] = new $class( $field );
+			$field_objs[] = RWMB_Field::register( $field );
 		}
 
 		return $field_objs;

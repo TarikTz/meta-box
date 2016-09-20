@@ -6,6 +6,7 @@
  */
 abstract class RWMB_Field
 {
+	public static $fields = array();
 	public $type        = '';
 	public $object_type = 'post';
 	public $id          = '';
@@ -27,6 +28,28 @@ abstract class RWMB_Field
 	public $disabled   = false;
 	public $required   = false;
 	public $attributes = array();
+
+	/**
+	 * Create and register field object
+	 * Takes field arguments, creates a field object, then caches and returns object
+	 *
+	 * @param array  $args
+	 *
+	 * @return Field object
+	 */
+
+	public static function register( $args )
+	{
+		$type       = isset( $args['type'] ) : $args['type'] : null;
+		$class_name = self::get_class_name( $type );
+		$field      = new $class_name( $args );
+		if( isset( $args['id'] ) )
+		{
+			self::$fields[ $args['id'] ] = $field;
+		}
+
+		return $field;
+	}
 
 	function __construct( $args = array() )
 	{
@@ -444,10 +467,10 @@ abstract class RWMB_Field
 	/**
 	 * Get field class name
 	 *
-	 * @param text $type Field array
+	 * @param text $type Field type
 	 * @return string Field class name
 	 */
-	public static function get_class_name( $type )
+	public static function get_class_name( $type = null )
 	{
 		if ( 'file_advanced' == $type )
 		{
